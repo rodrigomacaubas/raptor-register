@@ -1,0 +1,365 @@
+<!-- register.component.html -->
+<div class="container">
+  <div class="left-side">
+    <img src="logo.jpeg" alt="Logo Raptor" class="logo" />
+    <div class="subtitle">Bem-vindo à Raptor!</div>
+  </div>
+
+  <div class="right-side">
+    <!-- Novo elemento de apresentação do servidor -->
+    <div *ngIf="!showServerList && !showRegisterForm && serverInfo" class="server-welcome-container">
+      <img *ngIf="serverId" [src]="'assets/servers/' + serverId + '.png'" alt="Logo do Servidor" class="server-logo">
+      <h2 class="server-welcome-title">Crie sua conta Raptor para usar no</h2>
+      <h1 class="server-name">Servidor {{ serverInfo.server_name }}</h1>
+    </div>
+  
+    <div *ngIf="!showServerList && !showRegisterForm" class="flat-button-container">
+      <button
+        mat-flat-button
+        class="custom-flat-button primary-flat"
+        (click)="onExistingAccount()"
+      >
+        Já possuo uma conta Raptor
+      </button>
+      <button
+        mat-flat-button
+        class="custom-flat-button accent-flat"
+        (click)="onNewAccount()"
+      >
+        Não possuo uma conta Raptor
+      </button>
+    </div>
+  
+<!-- Add this at the end of the right-side div, after the mat-card closing tag -->
+<div class="promotion-container">
+  <p class="promotion-text">Crie um servidor na Raptor Cloud com Painel</p>
+  <div class="contact-container">
+    <a href="https://wa.me/5561920059470" target="_blank" class="whatsapp-link">
+      <img src="assets/commom/WhatsApp.svg" alt="WhatsApp" class="whatsapp-icon">
+      <span>61 92005-9470</span>
+    </a>
+    <a href="mailto:atendimento@raptorcloud.com.br" class="email-link">
+      atendimento&#64;raptorcloud.com.br
+    </a>
+  </div>
+  <p class="copyright">©2025 - Raptor Cloud</p>
+</div>
+
+    <!-- Resto do código permanece igual -->
+  
+    <mat-card *ngIf="showServerList || showRegisterForm" class="register-card">
+      <div *ngIf="showServerList" class="server-list">
+         </div>
+
+      <div *ngIf="showRegisterForm" class="register-form">
+        <div class="stepper-container">
+          <mat-stepper linear orientation="vertical" #stepper>
+            <mat-step [stepControl]="registerForm">
+              <ng-template matStepLabel>Cadastro</ng-template>
+              <form [formGroup]="registerForm">
+                <div class="form-grid-container" style="margin-top: 3%;">
+                  <div class="form-field-container">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                      <mat-label>Nome</mat-label>
+                      <input matInput formControlName="first_name" required />
+                    </mat-form-field>
+                    <div class="validation-message" *ngIf="registerForm.get('first_name')?.dirty || registerForm.get('first_name')?.touched">
+                      <span class="error-message" *ngIf="registerForm.get('first_name')?.hasError('required')">
+                        <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> Nome é obrigatório.
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-field-container">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                      <mat-label>Sobrenome</mat-label>
+                      <input matInput formControlName="last_name" required />
+                    </mat-form-field>
+                    <div class="validation-message" *ngIf="registerForm.get('last_name')?.dirty || registerForm.get('last_name')?.touched">
+                      <span class="error-message" *ngIf="registerForm.get('last_name')?.hasError('required')">
+                        <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> Sobrenome é obrigatório.
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-field-container">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                      <mat-label>Username</mat-label>
+                      <input matInput formControlName="username" required />
+                    </mat-form-field>
+                    <div class="validation-message" *ngIf="registerForm.get('username')?.pending">
+                      <span class="validating-message">Verificando disponibilidade...</span>
+                    </div>
+                    <div class="validation-message" *ngIf="registerForm.get('username')?.dirty || registerForm.get('username')?.touched">
+                      <span class="error-message" *ngIf="registerForm.get('username')?.hasError('usernameTaken')">
+                        <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> Este username já está em uso.
+                      </span>
+                      <span class="success-message" *ngIf="!registerForm.get('username')?.hasError('usernameTaken') && !registerForm.get('username')?.pending && registerForm.get('username')?.valid">
+                        <img src="assets/icons/check.svg" alt="Check" class="check-icon"> Username disponível!
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-field-container">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                      <mat-label>Email</mat-label>
+                      <input matInput type="email" formControlName="email" required />
+                    </mat-form-field>
+                    <div class="validation-message" *ngIf="registerForm.get('email')?.pending">
+                      <span class="validating-message">Verificando disponibilidade...</span>
+                    </div>
+                    <div class="validation-message" *ngIf="registerForm.get('email')?.dirty || registerForm.get('email')?.touched">
+                      <span class="error-message" *ngIf="registerForm.get('email')?.hasError('email')">
+                        <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> Email inválido.
+                      </span>
+                      <span class="error-message" *ngIf="registerForm.get('email')?.hasError('emailTaken')">
+                        <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> Este email já está em uso.
+                      </span>
+                      <span class="success-message" *ngIf="!registerForm.get('email')?.hasError('emailTaken') && !registerForm.get('email')?.hasError('email') && !registerForm.get('email')?.pending && registerForm.get('email')?.valid">
+                        <img src="assets/icons/check.svg" alt="Check" class="check-icon"> Email disponível!
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-field-container">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                      <mat-label>Senha</mat-label>
+                      <input
+                        matInput
+                        type="password"
+                        formControlName="password"
+                        required
+                      />
+                    </mat-form-field>
+                    <div class="validation-message" *ngIf="registerForm.get('password')?.dirty || registerForm.get('password')?.touched">
+                      <span class="error-message" *ngIf="registerForm.get('password')?.hasError('weakPassword')">
+                        <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> A senha deve ter no mínimo 8 caracteres, incluindo número e caractere especial.
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-field-container">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                      <mat-label>Confirmar Senha</mat-label>
+                      <input
+                        matInput
+                        type="password"
+                        formControlName="confirmPassword"
+                        required
+                      />
+                    </mat-form-field>
+                    <div class="validation-message" *ngIf="registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched">
+                      <span class="error-message" *ngIf="registerForm.hasError('passwordsMismatch')">
+                        <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> As senhas não coincidem.
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-field-container">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                      <mat-label>Data de Aniversário</mat-label>
+                      <input
+                        matInput
+                        [matDatepicker]="picker"
+                        formControlName="birthDate"
+                        required
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <div class="validation-message" *ngIf="registerForm.get('birthDate')?.dirty || registerForm.get('birthDate')?.touched">
+                      <span class="error-message" *ngIf="registerForm.get('birthDate')?.hasError('required')">
+                        <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> A data de nascimento é obrigatória.
+                      </span>
+                      <span class="error-message" *ngIf="registerForm.get('birthDate')?.hasError('minAge')">
+                        <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> Você deve ter pelo menos 13 anos para se cadastrar.
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-field-container">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                      <mat-label>Gênero</mat-label>
+                      <mat-select formControlName="gender" required>
+                        <mat-option value="male">Masculino</mat-option>
+                        <mat-option value="female">Feminino</mat-option>
+                        <mat-option value="other">Outro</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div class="validation-message" *ngIf="registerForm.get('gender')?.dirty || registerForm.get('gender')?.touched">
+                      <span class="error-message" *ngIf="registerForm.get('gender')?.hasError('required')">
+                        <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> O gênero é obrigatório.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Mensagem de erro geral após tentativa de registro -->
+                <div *ngIf="registrationError" class="registration-error-message">
+                  <span class="error-message">
+                    <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> {{ registrationError }}
+                  </span>
+                </div>
+
+                <!-- Server info message -->
+                <div class="server-info-message" *ngIf="serverInfo">
+                  Sua conta Raptor pode ser usada no Servidor <strong>{{ serverInfo.server_name }}</strong> e outros servidores que estão hospedados na Raptor Cloud ou que utilizam o Painel Raptor.
+                </div>
+                <div class="server-info-message" *ngIf="!serverInfo && !isLoadingServerInfo">
+                  Sua conta Raptor pode ser usada em todos os servidores que estão hospedados na Raptor Cloud ou que utilizam o Painel Raptor.
+                </div>
+
+                <p class="terms-text">
+                  Ao criar uma conta, você concorda com os
+                  <a href="#">Termos de Serviço</a> e nossa
+                  <a href="#">Política de Privacidade</a>. Ocasionalmente, enviaremos
+                  e-mails sobre notícias, produtos e serviços; você pode cancelar a
+                  qualquer momento.
+                </p>
+
+                <div class="button-group">
+                  <button
+                    mat-flat-button
+                    color="primary"
+                    (click)="registerUser(stepper)"
+                    [disabled]="!registerForm.valid || isRegistering"
+                  >
+                    <span *ngIf="!isRegistering">Próximo: Verificação de E-mail</span>
+                    <span *ngIf="isRegistering">Registrando...</span>
+                  </button>
+                </div>
+              </form>
+            </mat-step>
+
+            <mat-step [stepControl]="verificationForm">
+              <ng-template matStepLabel>Verificação do E-mail</ng-template>     
+              <form [formGroup]="verificationForm">
+                <!-- Account created confirmation message -->
+                <div *ngIf="accountCreated" class="account-created-message">
+                  <img src="assets/icons/check.svg" alt="Check" class="check-icon">
+                  <span>Conta criada com sucesso! Agora verifique seu e-mail para ativar sua conta.</span>
+                </div>
+                
+                <!-- Email verified confirmation message -->
+                <div *ngIf="emailVerified" class="email-verified-message">
+                  <img src="assets/icons/check.svg" alt="Check" class="check-icon">
+                  <span>E-mail verificado com sucesso!</span>
+                </div>
+                
+                <!-- Email resent confirmation message -->
+                <div *ngIf="emailConfirmationSent" class="email-sent-message">
+                  <img src="assets/icons/check.svg" alt="Check" class="check-icon">
+                  <span>Um novo código de verificação foi enviado para seu e-mail.</span>
+                </div>
+                
+                <!-- Resend error message -->
+                <div *ngIf="resendError" class="resend-error-message">
+                  <span class="error-message">
+                    <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> {{ resendError }}
+                  </span>
+                </div>
+                
+                <!-- Verification error message -->
+                <div *ngIf="verificationError" class="verification-error-message">
+                  <span class="error-message">
+                    <img src="assets/icons/uncheck.svg" alt="Error" class="uncheck-icon"> {{ verificationError }}
+                  </span>
+                </div>
+                
+                <p>
+                  Enviamos um código de seis dígitos para
+                  {{ registerForm.value.email }}.
+                </p>
+                <div class="code-inputs">
+                  <mat-form-field
+                    appearance="outline" 
+                    *ngFor="let ctrl of ['code1', 'code2', 'code3', 'code4', 'code5', 'code6']; let i = index"
+                  >
+                    <input
+                      matInput
+                      type="text"
+                      maxlength="1"
+                      [formControlName]="ctrl"
+                      required
+                      #codeInput
+                      (keyup)="onCodeDigit($event, i)"
+                      (paste)="onCodePaste($event)"
+                      (input)="onInputChange($event, i)"
+                    />
+                  </mat-form-field>
+                </div>
+                <p class="email-code-instruction">
+                  Mantenha esta janela aberta enquanto verifica sua caixa de entrada.
+                </p>
+                
+                <!-- Resend code button with cooldown -->
+                <div class="resend-code-container">
+                  <button
+                    mat-button
+                    type="button"
+                    color="primary"
+                    (click)="resendVerificationCode()"
+                    [disabled]="resendCooldown > 0 || isResending"
+                    class="resend-code-button"
+                  >
+                    <span *ngIf="isResending">Reenviando...</span>
+                    <span *ngIf="!isResending && resendCooldown > 0">Reenviar código ({{ resendCooldown }}s)</span>
+                    <span *ngIf="!isResending && resendCooldown === 0">Reenviar código</span>
+                  </button>
+                </div>
+                
+                <div class="button-group">
+                  <button
+                    mat-flat-button
+                    color="primary"
+                    (click)="verifyCode(stepper)"
+                    [disabled]="!verificationForm.valid || isVerifyingCode || emailVerified"
+                    class="verify-button"
+                  >
+                    <span *ngIf="!isVerifyingCode">Verificar</span>
+                    <span *ngIf="isVerifyingCode">Verificando...</span>
+                  </button>
+                  
+                  <button
+                    mat-flat-button
+                    color="accent"
+                    matStepperNext
+                    [disabled]="!emailVerified"
+                    class="next-button"
+                  >
+                    Próximo
+                  </button>
+                </div>
+              </form>
+            </mat-step>
+
+            <mat-step>
+              <ng-template matStepLabel>Finalizar</ng-template>
+              <div class="completion-container">
+                <h2>Conta criada com sucesso!</h2>
+                <p>Sua conta Raptor foi criada e verificada com sucesso.</p>
+                
+                <div *ngIf="serverInfo" class="server-return-info">
+                  <p>Você pode agora retornar ao servidor {{ serverInfo.server_name }}.</p>
+                </div>
+                
+                <div class="button-container">
+                  <button 
+                    mat-flat-button 
+                    color="primary" 
+                    class="return-button"
+                    (click)="returnToServer()">
+                    Retornar ao servidor
+                  </button>
+                </div>
+              </div>
+            </mat-step>
+          </mat-stepper>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
